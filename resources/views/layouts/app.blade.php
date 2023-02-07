@@ -10,16 +10,18 @@
     {{--    <link rel="script" href="{{ mix('css/app.css') }}"/>--}}
 </head>
 <body>
-
-
-<!-- footer -->
-<div class="copyright py-4 text-center text-white">
-    <div class="container">
-        <small>
-            Copyright - Daniel - <b>luzumi</b>
-        </small>
+    <div id="content">
+        @yield('content')
     </div>
-</div>
+
+    <!-- footer -->
+    <div class="copyright py-4 text-center text-white">
+        <div class="container">
+            <small>
+                Copyright - Daniel - <b>luzumi</b>
+            </small>
+        </div>
+    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous">

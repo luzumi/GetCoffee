@@ -8,9 +8,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $viewData = [];
+        $viewData = ['name'=>'hans'];
         $viewData["title"] = "Home Page - GetMeCoffee";
 
-        return view('welcome', compact("viewData"));
+        return view('welcome')->with( compact("viewData"));
     }
 }
