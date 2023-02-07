@@ -13,7 +13,7 @@
             console.log("Data received: " + event.data);
             var data = JSON.parse(event.data);
             var user = data.user;
-            const url = '{{ route('menu') }}/' + user.id;
+            const url = '{{ route('menu', ['id'=>1]) }}';
             $.ajax({
                 type: "GET",
                 url: url,
@@ -22,7 +22,7 @@
                     console.log(response);
                     $.ajax({
                         type: "GET",
-                        url: '{{ route('menu', ['user' => '']) }}' + user,
+                        url: '{{ route('menu', ['id' => 1]) }}',
                         data: {user: user},
                         success: function (menuResponse) {
                             // Do something with the response

@@ -24,7 +24,7 @@ Route::get('/', function ()
 });
 
 Route::post('/receive-data', [ApiController::class, 'receiveData'])->name('receive-data');
-Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu');
+Route::get('/menu/', [MenuController::class, 'show'])->name('menu');
 Route::get('/rasp', [SendRequestToRasp::class, 'getUser'])->name('send-request-to-rasp');
 
 
