@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Symfony\Component\HttpFoundation\Request;
 
 class MenuController extends Controller
 {
-    public function show(int $id)
+    public function show(int|string $id)
     {
-        $viewData = User::findOrFail($id);
+        $viewData = User::find($id);
         return view('menu')->with(compact('viewData'));
     }
 }

@@ -1,45 +1,41 @@
 @extends('layouts.app')
 @section('content')
-    <div class="text-center">
-        GetMeCoffee
-        {{ route('send-request-to-rasp') }}
-
+    <div id="content" class="text-center">
+        {{$viewData??'RFID-Card auflegen'}}
     </div>
+{{--        <video id="myVideo" loop autoplay width="100%" height="auto" class="block" >--}}
+{{--            <source src="/storage/media/juicy%20vapor,%20in%20the%20style%20of%203D%20Rendering(1).mp4" type="video/mp4">--}}
+{{--            Your browser does not support the video tag.--}}
+{{--        </video>--}}
+
+
     <script>
-        const evtSource = new EventSource(' {{ route('send-request-to-rasp') }} ');
-        // console.log(evtSource);
-        //
-        evtSource.onmessage = function(event) {
-            console.log("Data received: " + event.data);
-            var data = JSON.parse(event.data);
-            var user = data.user;
-            const url = '{{ route('menu', ['id'=>1]) }}';
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function (response) {
-                    var user = response.user;
-                    console.log(response);
-                    $.ajax({
-                        type: "GET",
-                        url: '{{ route('menu', ['id' => 1]) }}',
-                        data: {user: user},
-                        success: function (menuResponse) {
-                            // Do something with the response
-                            $('#content').html(data);
-                        }
-                    });
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "{{ route('send-request-to-rasp') }}");
+        xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                let responseText = xhr.responseText;
+                if (responseText.startsWith("data:")) {
+                    responseText = responseText.substring(5);
                 }
-            });
-        }
+                let data = JSON.parse(responseText);
+                console.log(data)
+                if (data.user == null) {
+                    // Wiederhole den Request, wenn kein Benutzer gefunden wurde
+                    xhr.open("GET", "{{ route('send-request-to-rasp') }}");
+                    xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
+                    xhr.send();
+                } else {
+                    let user = data.user;
+                    let userId = user.id;
+                    console.log(data)
+                    window.location.href = '/menu/' + userId;
+                }
+            }
+        };
 
-        // evtSource.addEventListener("ping", (event) => {
-        //     const newElement = document.createElement("li");
-        //     const eventList = document.getElementById("list");
-        //     const time = JSON.parse(event.data).time;
-        //     newElement.textContent = `ping at ${time}`;
-        //     eventList.appendChild(newElement);
-        // });
-
+        xhr.send();
     </script>
 @endsection

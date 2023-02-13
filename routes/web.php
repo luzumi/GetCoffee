@@ -3,8 +3,6 @@
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SendRequestToRasp;
-use App\Http\Controllers\SSEController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,8 +22,14 @@ Route::get('/', function ()
 });
 
 Route::post('/receive-data', [ApiController::class, 'receiveData'])->name('receive-data');
-Route::get('/menu/', [MenuController::class, 'show'])->name('menu');
-Route::get('/rasp', [SendRequestToRasp::class, 'getUser'])->name('send-request-to-rasp');
+Route::get('reset-user-id', [ApiController::class, 'resetUserId'])->name('reset-user-id');
+Route::get('turn_on', [ApiController::class, 'turn_on'])->name('turn_on');
+Route::get('turn_off', [ApiController::class, 'turn_off'])->name('turn_off');
+
+Route::middleware(['cors'])->group(function () {
+    Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu');
+    Route::get('/rasp', [SendRequestToRasp::class, 'getUser'])->name('send-request-to-rasp');
+});;
 
 
 
